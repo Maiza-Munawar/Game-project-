@@ -1,0 +1,522 @@
+#include<iostream>
+#include<ctime>
+#include<string>
+#include<cstdlib>
+#include<algorithm>
+using namespace std;
+
+
+//  BASE CLASS: Game
+
+class Game {
+protected:
+    int score;
+    int difficulty;
+public:
+    Game(int d) : score(0), difficulty(d) {}
+    virtual int play() = 0;   // Pure virtual - har game apna khud implement karega
+    virtual ~Game() {}
+    int getScore() { return score; }
+};
+
+
+//  CLASS: WordScramble
+
+class WordScramble : public Game {
+public:
+    WordScramble(int d) : Game(d) {}
+
+    int play() override {
+        cout << "\n**********************\n";
+        cout << "* WORD SCRAMBLE GAME *\n";
+        cout << "**********************\n";
+
+        string words[3][5] = {
+            {"evolution","array","skeleton","credit","learn"},
+            {"account","customer","beautiful","asteroid","difficult"},
+            {"consultant","mysterical","habitually","phenomena","compensate"}
+        };
+        string scrambled[3][5] = {
+            {"volutioen","rayar","tonsklee","cterdi","nlear"},
+            {"cnacuot","ecmstoru","utabueifl","taserodi","ffidulcit"},
+            {"suctanlont","tyrsiemacl","bauthllaiy","menaohpen","pomacesten"}
+        };
+
+        int d = difficulty - 1;
+        if(d < 0 || d > 2) { cout << "Invalid difficulty!\n"; return 0; }
+
+        string answer;
+        for(int i = 0; i < 5; i++) {
+            cout << "\nUnscramble: " << scrambled[d][i] << "\nYour answer: ";
+            cin >> answer;
+            if(answer == words[d][i]) { cout << "Correct!\n"; score++; }
+            else cout << "Wrong! Answer was: " << words[d][i] << "\n";
+        }
+
+        cout << "Score: " << score << "/5\n";
+        score = (score * 10) / 5;
+        return score;
+    }
+};
+
+
+//  CLASS: WordSearch
+
+class WordSearch : public Game {
+public:
+    WordSearch(int d) : Game(d) {}
+
+    int play() override {
+        cout << "\n**********************\n";
+        cout << "* WORD SEARCH GAME   *\n";
+        cout << "**********************\n";
+
+        string guess;
+
+        if(difficulty == 1) {
+            char grid[5][5] = {
+                {'P','S','D','E','Q'},
+                {'G','T','S','A','U'},
+                {'T','A','G','M','E'},
+                {'G','C','M','A','U'},
+                {'P','K','A','E','E'}
+            };
+            string words[9] = {"STACK","stack","Stack","QUEUE","queue","Queue","GAME","game","Game"};
+
+            for(int i=0;i<5;i++) { for(int j=0;j<5;j++) cout<<grid[i][j]<<" "; cout<<"\n"; }
+
+            cout << "\nFind 3 hidden words!\n";
+            for(int a=0;a<3;a++) {
+                cout << "Enter word: "; cin >> guess;
+                bool found = false;
+                for(int i=0;i<9;i++) if(guess==words[i]) found=true;
+                if(found) { cout<<"Correct!\n"; score++; }
+                else cout<<"Not found.\n";
+            }
+        }
+        else if(difficulty == 2) {
+            char grid[10][10] = {
+                {'A','L','G','O','R','I','T','H','M','S'},
+                {'M','E','T','A','M','N','R','P','H','T'},
+                {'T','A','G','R','E','N','K','A','S','A'},
+                {'G','C','M','C','U','O','M','E','W','T'},
+                {'P','K','A','H','I','V','E','P','G','I'},
+                {'A','Q','O','A','I','A','X','Z','A','S'},
+                {'S','Q','M','E','U','T','T','E','E','T'},
+                {'R','W','A','O','Y','I','P','R','O','I'},
+                {'K','T','P','L','T','O','S','O','O','C'},
+                {'S','Z','X','O','O','N','D','C','X','N'}
+            };
+            string words[9] = {"STATISTIC","statistic","Statistic","INNOVATION","innovation","Innovation","ALGORITHM","algorithm","Algorithm"};
+
+            for(int i=0;i<10;i++) { for(int j=0;j<10;j++) cout<<grid[i][j]<<" "; cout<<"\n"; }
+
+            cout << "\nFind 3 hidden words!\n";
+            for(int a=0;a<3;a++) {
+                cout << "Enter word: "; cin >> guess;
+                bool found = false;
+                for(int i=0;i<9;i++) if(guess==words[i]) found=true;
+                if(found) { cout<<"Correct!\n"; score++; }
+                else cout<<"Not found.\n";
+            }
+        }
+        else if(difficulty == 3) {
+            char grid[13][13] = {
+                {'A','S','D','E','Q','S','M','P','O','S','X','O','P'},
+                {'M','E','T','A','M','O','R','P','H','O','S','I','S'},
+                {'T','A','G','R','E','U','K','A','S','G','S','M','Q'},
+                {'G','C','M','C','U','N','M','E','W','S','F','K','L'},
+                {'P','K','A','H','A','J','O','P','G','F','D','S','C'},
+                {'A','Q','O','A','I','S','X','Z','A','Q','H','V','Y'},
+                {'S','Q','M','E','U','G','T','E','E','P','Q','D','W'},
+                {'R','W','F','O','Y','T','P','R','O','L','M','P','Q'},
+                {'K','L','P','L','T','O','S','O','O','W','J','W','X'},
+                {'S','Z','X','O','O','M','D','C','X','N','B','L','H'},
+                {'I','O','K','G','B','N','I','B','P','A','O','G','K'},
+                {'M','U','C','Y','P','I','W','S','Z','T','S','M','L'},
+                {'N','B','V','C','I','Z','L','C','S','Q','N','L','Y'}
+            };
+            string words[9] = {"METAMORPHOSIS","metamorphosis","Metamorphosis","ARCHAEOLOGY","archaeology","Archaeology","ASTRONOMY","astronomy","Astronomy"};
+
+            for(int i=0;i<13;i++) { for(int j=0;j<13;j++) cout<<grid[i][j]<<" "; cout<<"\n"; }
+
+            cout << "\nFind 3 hidden words!\n";
+            for(int a=0;a<3;a++) {
+                cout << "Enter word: "; cin >> guess;
+                bool found = false;
+                for(int i=0;i<9;i++) if(guess==words[i]) found=true;
+                if(found) { cout<<"Correct!\n"; score++; }
+                else cout<<"Not found.\n";
+            }
+        }
+        else { cout<<"Invalid difficulty!\n"; return 0; }
+
+        cout << "GAME OVER!\n";
+        score = (score * 10) / 3;
+        return score;
+    }
+};
+
+//  CLASS: Sudoku
+class Sudoku : public Game {
+public:
+    Sudoku(int d) : Game(d) {}
+
+    int play() override {
+        cout << "\n**********************\n";
+        cout << "*       SUDOKU       *\n";
+        cout << "**********************\n";
+
+        int moves = 0;
+
+        if(difficulty == 1) {
+            int board[3][3] = {{0,1,2},{0,3,0},{1,0,3}};
+            int row, col, num;
+
+            while(true) {
+                cout << "\n--- 3x3 SUDOKU ---\n";
+                for(int i=0;i<3;i++) {
+                    for(int j=0;j<3;j++) { if(board[i][j]==0) cout<<". "; else cout<<board[i][j]<<" "; }
+                    cout<<"\n";
+                }
+
+                bool complete = true;
+                for(int i=0;i<3;i++) for(int j=0;j<3;j++) if(board[i][j]==0) complete=false;
+                if(complete) break;
+
+                cout<<"Row (1-3): "; cin>>row;
+                cout<<"Col (1-3): "; cin>>col;
+                cout<<"Num (1-3): "; cin>>num;
+                row--; col--;
+
+                if(row<0||row>2||col<0||col>2) { cout<<"Invalid position!\n"; continue; }
+                if(num<1||num>3) { cout<<"Invalid number!\n"; continue; }
+                if(board[row][col]!=0) { cout<<"Cell already filled!\n"; continue; }
+
+                bool valid = true;
+                for(int i=0;i<3;i++) { if(board[row][i]==num) valid=false; if(board[i][col]==num) valid=false; }
+
+                if(valid) { board[row][col]=num; cout<<"Placed!\n"; }
+                else { cout<<"Invalid move!\n"; moves++; }
+            }
+            cout<<"3x3 Sudoku Completed!\n";
+        }
+        else if(difficulty == 2) {
+            int board[4][4] = {{1,0,3,0},{0,0,2,1},{0,1,0,2},{2,4,0,0}};
+            int row, col, num;
+
+            while(true) {
+                cout << "\n--- 4x4 SUDOKU ---\n";
+                for(int i=0;i<4;i++) {
+                    for(int j=0;j<4;j++) {
+                        if(board[i][j]==0) cout<<". "; else cout<<board[i][j]<<" ";
+                        if(j==1) cout<<"| ";
+                    }
+                    cout<<"\n";
+                    if(i==1) cout<<"-----------\n";
+                }
+
+                bool complete = true;
+                for(int i=0;i<4;i++) for(int j=0;j<4;j++) if(board[i][j]==0) complete=false;
+                if(complete) break;
+
+                cout<<"Row (1-4): "; cin>>row;
+                cout<<"Col (1-4): "; cin>>col;
+                cout<<"Num (1-4): "; cin>>num;
+                row--; col--;
+
+                if(row<0||row>3||col<0||col>3) { cout<<"Invalid position!\n"; continue; }
+                if(num<1||num>4) { cout<<"Invalid number!\n"; continue; }
+                if(board[row][col]!=0) { cout<<"Cell already filled!\n"; continue; }
+
+                bool valid = true;
+                for(int i=0;i<4;i++) { if(board[row][i]==num) valid=false; if(board[i][col]==num) valid=false; }
+                int sr=row-row%2, sc=col-col%2;
+                for(int i=0;i<2;i++) for(int j=0;j<2;j++) if(board[sr+i][sc+j]==num) valid=false;
+
+                if(valid) { board[row][col]=num; cout<<"Placed!\n"; }
+                else { cout<<"Invalid move!\n"; moves++; }
+            }
+            cout<<"4x4 Sudoku Completed!\n";
+        }
+        else { cout<<"Invalid difficulty!\n"; return 0; }
+
+        score = 10 - moves;
+        if(score < 0) score = 0;
+        cout << "Your score: " << score << "\n";
+        return score;
+    }
+};
+
+
+//  CLASS: TicTacToe
+
+class TicTacToe : public Game {
+private:
+    char board[3][3];
+
+    void printBoard() {
+        cout << "\n";
+        for(int i=0;i<3;i++) {
+            for(int j=0;j<3;j++) { cout<<" "<<board[i][j]<<" "; if(j<2) cout<<"|"; }
+            if(i<2) cout<<"\n---|---|---\n";
+        }
+        cout<<"\n";
+    }
+
+    bool checkWin(char player) {
+        for(int i=0;i<3;i++) {
+            if(board[i][0]==player && board[i][1]==player && board[i][2]==player) return true;
+            if(board[0][i]==player && board[1][i]==player && board[2][i]==player) return true;
+        }
+        if(board[0][0]==player && board[1][1]==player && board[2][2]==player) return true;
+        if(board[0][2]==player && board[1][1]==player && board[2][0]==player) return true;
+        return false;
+    }
+
+    bool checkDraw() {
+        for(int i=0;i<3;i++) for(int j=0;j<3;j++) if(board[i][j]==' ') return false;
+        return true;
+    }
+
+    void computerMove() {
+        // Try to win
+        for(int i=0;i<3;i++) for(int j=0;j<3;j++) if(board[i][j]==' ') {
+            board[i][j]='O'; if(checkWin('O')) return; board[i][j]=' ';
+        }
+        // Block player
+        for(int i=0;i<3;i++) for(int j=0;j<3;j++) if(board[i][j]==' ') {
+            board[i][j]='X'; if(checkWin('X')) { board[i][j]='O'; return; } board[i][j]=' ';
+        }
+        // Center
+        if(board[1][1]==' ') { board[1][1]='O'; return; }
+        // Corners
+        for(int i=0;i<3;i+=2) for(int j=0;j<3;j+=2) if(board[i][j]==' ') { board[i][j]='O'; return; }
+        // Any
+        for(int i=0;i<3;i++) for(int j=0;j<3;j++) if(board[i][j]==' ') { board[i][j]='O'; return; }
+    }
+
+public:
+    TicTacToe(int d) : Game(d) {
+        for(int i=0;i<3;i++) for(int j=0;j<3;j++) board[i][j]=' ';
+    }
+
+    int play() override {
+        cout << "\n**********************\n";
+        cout << "*    TIC TAC TOE     *\n";
+        cout << "**********************\n";
+
+        int row, col;
+
+        while(true) {
+            printBoard();
+            cout<<"Row (1-3): "; cin>>row;
+            cout<<"Col (1-3): "; cin>>col;
+            row--; col--;
+
+            if(row<0||row>2||col<0||col>2||board[row][col]!=' ') { cout<<"Invalid move!\n"; continue; }
+
+            board[row][col]='X';
+
+            if(checkWin('X')) { printBoard(); cout<<"You won!\n"; score=10; break; }
+            if(checkDraw())   { printBoard(); cout<<"Draw!\n";    score=5;  break; }
+
+            computerMove();
+
+            if(checkWin('O')) { printBoard(); cout<<"You lost.\n"; score=0; break; }
+            if(checkDraw())   { printBoard(); cout<<"Draw!\n";     score=5; break; }
+        }
+        cout << "Your score: " << score << "\n";
+        return score;
+    }
+};
+
+
+//  CLASS: CardGame
+class CardGame : public Game {
+public:
+    CardGame(int d) : Game(d) {}
+
+    int play() override {
+        cout << "\n***********************\n";
+        cout << "* MATCHING PAIRS GAME *\n";
+        cout << "***********************\n";
+
+        int size, perRow;
+        if(difficulty==1)      { size=9;  perRow=3; }
+        else if(difficulty==2) { size=16; perRow=4; }
+        else { cout<<"Invalid difficulty!\n"; return 0; }
+
+        int cards[16];
+        bool revealed[16] = {false};
+
+        if(difficulty==1) { int t[9]={1,1,2,2,3,3,4,4,0}; for(int i=0;i<9;i++) cards[i]=t[i]; }
+        else              { int t[16]={1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8}; for(int i=0;i<16;i++) cards[i]=t[i]; }
+
+        srand(time(0));
+        for(int i=0;i<size;i++) { int j=rand()%size; swap(cards[i],cards[j]); }
+
+        auto display = [&]() {
+            cout<<"\n--- BOARD ---\n";
+            for(int i=0;i<size;i++) {
+                if(revealed[i]) cout<<"["<<cards[i]<<"] "; else cout<<"[*] ";
+                if((i+1)%perRow==0) cout<<"\n";
+            }
+            cout<<"-------------\n";
+        };
+
+        auto allMatched = [&]() {
+            int count=0; for(int i=0;i<size;i++) if(revealed[i]) count++;
+            return (difficulty==1) ? (count>=8) : (count>=16);
+        };
+
+        int c1, c2;
+        while(true) {
+            display();
+            cout<<"Enter 1st index (0-"<<size-1<<"): "; cin>>c1;
+            cout<<"Enter 2nd index (0-"<<size-1<<"): "; cin>>c2;
+
+            if(c1<0||c1>=size||c2<0||c2>=size||c1==c2||revealed[c1]||revealed[c2]) {
+                cout<<"Invalid move!\n"; continue;
+            }
+
+            revealed[c1]=revealed[c2]=true;
+            display();
+
+            if(cards[c1]==cards[c2]) cout<<"Match!\n";
+            else { cout<<"No match.\n"; revealed[c1]=revealed[c2]=false; }
+
+            if(allMatched()) { cout<<"All pairs found!\n"; break; }
+        }
+
+        score = (difficulty==1) ? 8 : 10;
+        cout << "Your score: " << score << "\n";
+        return score;
+    }
+};
+
+//  CLASS: PerformanceReport
+
+class PerformanceReport {
+private:
+    int totalScore;
+    int gamesPlayed;
+    string bestGame;
+    int bestPercent;
+
+public:
+    PerformanceReport() : totalScore(0), gamesPlayed(0), bestGame("none yet"), bestPercent(0) {}
+
+    void update(int score, int gameChoice) {
+        totalScore  += score;
+        gamesPlayed++;
+
+        if(score > bestPercent) {
+            bestPercent = score;
+            string names[6] = {"","Word Scramble","Word Search","Sudoku","Tic Tac Toe","Card Game"};
+            if(gameChoice>=1 && gameChoice<=5) bestGame = names[gameChoice];
+        }
+    }
+
+    void show() {
+        int average = (gamesPlayed > 0) ? (totalScore * 100) / (gamesPlayed * 10) : 0;
+
+        string skill = "Problem Solving";
+        if(bestGame=="Sudoku")       skill = "Problem Solving";
+        else if(bestGame=="Word Scramble") skill = "Vocabulary Strength";
+        else if(bestGame=="Word Search")   skill = "Pattern Recognition";
+        else if(bestGame=="Tic Tac Toe")   skill = "Strategic Thinking";
+        else if(bestGame=="Card Game")     skill = "Memory Recall";
+
+        cout << "\n=============================================\n";
+        cout << "        GAMING PERFORMANCE REPORT\n";
+        cout << "=============================================\n";
+        cout << "Games Played  : " << gamesPlayed << "\n";
+        cout << "Total Score   : " << totalScore << "/50\n";
+        cout << "Average       : " << average << "%\n";
+        cout << "Best Game     : " << bestGame << " (" << bestPercent << "%)\n";
+        cout << "Your Skill    : " << skill << "\n";
+        cout << "Summary       : ";
+        if(average>=80)      cout<<"Excellent! Try higher difficulties.\n";
+        else if(average>=60) cout<<"Good job! Keep practicing.\n";
+        else                 cout<<"Keep trying! Start with easier levels.\n";
+        cout << "=============================================\n";
+        cout << "    CONGRATULATIONS! All Games Completed!\n";
+        cout << "=============================================\n\n";
+    }
+};
+
+//  MAIN
+int main() {
+    srand(time(0));
+
+    // --- Player Setup ---
+    string playerName;
+    int difficulty = 1;
+    bool played[6][10] = {};
+    int maxDifficulty[6] = {0, 3, 3, 2, 1, 2};
+
+    PerformanceReport report;
+
+    cout << "*************************************\n";
+    cout << "     WELCOME TO MINI GAME ARCADE!\n";
+    cout << "*************************************\n";
+    cout << "Enter your name: ";
+    cin >> playerName;
+    cout << "\nHello " << playerName << "! Let's play!\n";
+
+    // --- First game: player chooses ---
+    cout << "\nChoose your first game:\n";
+    cout << "1. Word Scramble\n2. Word Search\n3. Sudoku\n4. Tic Tac Toe\n5. Matching Pairs\n";
+
+    int choice;
+    do {
+        cout << "Enter choice (1-5): "; 
+		cin >> choice;
+        if(choice < 1 || choice > 5) cout << "Invalid choice!\n";} 
+	while(choice < 1 || choice > 5);
+
+    // --- Play 5 games ---
+    for(int i = 0; i < 5; i++) {
+
+        // Polymorphism: Game* pointer, alag alag objects
+        Game* game = nullptr;
+        if(choice == 1) game = new WordScramble(difficulty);
+        else if(choice == 2) game = new WordSearch(difficulty);
+        else if(choice == 3) game = new Sudoku(difficulty);
+        else if(choice == 4) game = new TicTacToe(difficulty);
+        else if(choice == 5) game = new CardGame(difficulty);
+
+        if(!game) break;
+
+        // Play and record score
+        int score = game->play();
+        played[choice][difficulty] = true;
+        report.update(score, choice);
+        delete game;
+
+        // Difficulty adjust
+        if(score >= 8)     { difficulty++; cout << "Great! Difficulty increasing.\n"; }
+        else if(score < 4) { difficulty--; cout << "Difficulty lowering.\n"; }
+        else                 cout << "Difficulty stays the same.\n";
+
+        if(difficulty < 1) difficulty = 1;
+        if(difficulty > 3) difficulty = 3;
+
+        // Random next game (not already played)
+        if(i < 4) {
+            do {
+                choice = rand() % 5 + 1;
+                int d = difficulty;
+                while(d > maxDifficulty[choice] && d > 1) d--;
+                difficulty = d;
+            } while(played[choice][difficulty]);
+        }
+    }
+
+    // Final performance report
+    report.show();
+    cout << "Thanks for playing, " << playerName << "!\n";
+
+    return 0;
+}
